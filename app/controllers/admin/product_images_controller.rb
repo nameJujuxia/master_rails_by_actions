@@ -34,7 +34,7 @@ class Admin::ProductImagesController < Admin::BaseController
       flash[:notice] = "修改失败"
     end
 
-    redirect_to :back
+    redirect_to admin_product_product_images_path
   end
 
   private
