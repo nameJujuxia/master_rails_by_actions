@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   
       @user = User.new(params.require(:user)
         .permit(:email, :password, :password_confirmation))
+      @user.uuid = session[:user_uuid]
     #   @user.uuid = RandomCode.generate_utoken
     #   update_browser_uuid @user.uuid
   
