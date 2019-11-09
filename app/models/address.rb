@@ -7,10 +7,31 @@ class Address < ApplicationRecord
   validates :address, presence: { message: "地址不能为空" }
 
   belongs_to :user
+  attr_accessor :set_as_default
+
+  after_save :set_as_default_address
+  before_destroy :remove_self_as_default_address
 
   module AddressType
-    User = 'user'
-    Order = 'order'
+    USER = 'user'
+    ORDER = 'order'
   end
 
+  private
+  def set_as_default_address
+    if self.set_as_default.to_i == 1
+      self.user.default_address = self
+      self.user.save!
+    else
+      remove_self_as_default_address
+    end
+  end
+
+  def remove_self_as_default_address
+    if self.user.default_address == self
+      self.user.default_address = nil
+      self.user.save!
+    end
+  end
+  
 end
